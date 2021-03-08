@@ -28,7 +28,7 @@ Here is the solution I developed to solve the challenge.
 8) The padded values we added to the front and end allow every element in the original nums to be a middle element.
 */
 
-function findPeakElement(nums) {
+function findPeakElementMS(nums) {
   if (nums.length === 1) { return 0; }
   
   if (nums.length <= 3) {
@@ -52,8 +52,38 @@ function findPeakElement(nums) {
   }
 }
 
-console.log(findPeakElement([1,2,1,3,5,6,4])) // 1 or 5
-console.log(findPeakElement([2, 1])) // 0
-console.log(findPeakElement([1, 2, 3, 4])) // 3
-console.log(findPeakElement([3, 2, 1])) // 0
-console.log(findPeakElement([-2147483647, -2147483648])) // 0
+/*
+Here is an alternative solution I developed, which iterates over all elements in the array.
+1) We handle the edge case of there being one element in nums.
+2) We create a for loop which allows us to traverse every element in the array.
+3) On each iteration, we take the current element at i, the previous element and the next element. When i is 0, previous will be undefined,
+   when i is the last element in the array, next will be undefined.
+4) Our first conditional handles the case i is 0 and the element at index position i (0) is greater than the next element, if this is the
+   case we return i.
+5) Our next conditional checks whether i is the last element in the array and if current is greater than previous, we return i. We should
+   only ever return from this conditional when the only peak is at the very end of the array.
+6) When i is not the first or last element in the array, we check if current is greater than previous and greater than next, in which case
+   we return i.
+*/
+
+function findPeakElementMSX(nums) {
+  if (nums.length === 1) { return 0; }
+  
+  for (let i = 0; i < nums.length; i++) {
+    let current = nums[i];
+    let previous = nums[i - 1];
+    let next = nums[i + 1];
+    
+    if (i === 0 && current > next) {
+      return i;
+    }
+
+    if (i === nums.length - 1 && current > previous) {
+      return i;
+    }
+    
+    if (current > previous && current > next) {
+      return i;
+    }
+  }
+}
