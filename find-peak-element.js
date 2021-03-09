@@ -117,7 +117,25 @@ when the elements after mid are mixed, there will be multiple peaks because adja
 
 Notice that in example 3, there is no peak in the left half because all the elements before mid descend.
 
-
+findPeakElement([3, 4, 5, 6, 5, 4, 3, 2, 1])
+1) Iteration 1: 
+   - start = 0. end = 8. searching in [3, 4, 5, 6, 5, 4, 3, 2, 1].
+   - mid = 4. nums[mid] = 5. nums[mid - 1] = 6.
+   - nums[mid - 1] is greater than nums[mid] so we make end = mid - 1 i.e. we now search in left half of this array.
+2) Iteration 2:
+   - start = 0. end = 3. searching in [3, 4, 5, 6].
+   - mid = (0 + 3) / 2 = 1.5 = 2 (rounded up). nums[mid] = 5. nums[mid - 1] = 4.
+   - nums[mid - 1] is smaller than nums[mid] so we make start = mid i.e. we now search in right half of this array (mid inclusive).
+3) Iteration 3:
+   - start = 2. end = 3. searching in [5, 6].
+   - mid = 3. nums[mid] = 6. nums[mid - 1] = 5.
+   - nums[mid - 1] is smaller than nums[mid] so we make start = mid.
+4) start is now 3 and end is now 3 so loop is broken out of.
+5) Notice that nums[3] = 6, which is a peak in this array.
+6) We return start, or end, they will always be the same when the loop is broken out of.
+7) Note, because all the elements after mid - in nums - are descending, there was definitely no peak in the right half of the array, but 
+   if they were mixed or ascending there would have been a peak. What this approach gives us is certainty that the half we search in 
+   contains a peak.
 */
 
 function findPeakElement(nums) {
@@ -125,33 +143,15 @@ function findPeakElement(nums) {
   let start = 0;
   let end = n - 1;
 
-  let i = 1;
-
   while (start < end) {
     let mid = Math.ceil((start + end) / 2);
 
-    console.log('ITERATION', i)
-    console.log('START', start)
-    console.log('END', end, )
-    console.log('MID', mid, )
-    console.log(`nums[start] = ${nums[start]}`)
-    console.log(`nums[end] = ${nums[end]}`)
-    console.log(`nums[mid] = ${nums[mid]}`)
-    console.log(`nums[mid - 1] = ${nums[mid - 1]}`)
-    console.log('')
-
     if (nums[mid - 1] > nums[mid]) {
-      end = mid - 1; // search in the left half
-    } else { // if nums[mid - 1] < nums[mid]
-      start = mid; // search in the right half
+      end = mid - 1;
+    } else { 
+      start = mid;
     }
-
-    i++;
   }
 
   return start;
 }
-
-console.log(findPeakElement([2, 7, 3, 6, 5, 6, 7, 8, 9]))
-//console.log(findPeakElement([1, 6, 5, 4, 3, 2, 1]))
-//console.log(findPeakElement([1, 2, 3, 4, 5, 6, 1]))
