@@ -102,7 +102,20 @@ either up or down.
 
 1) Descending before mid - 1: [1, 4, 3, 1, 4], mid is intially (0 + 4) / 2 = 2. nums[mid] = 3. nums[mid - 1] = 4. 4 is a peak.
 2) Ascending before mid - 1: [7, 6, 5, 4, 3, 2, 1], mid is intiially (0 + 6) / 2 = 3. nums[mid] = 4. nums[mid - 1] = 5. 7 is a peak.
-3) Mixed before mid - 1: [2, 7, 3, 6, 5, 4, 3, 2, 1]. mid is initially (0 + 8) / 2 = 4. nums[mid] = 5. nums[mid - 1] = 6. 6, 7 are peaks.
+3) Mixed before mid - 1: [2, 7, 3, 6, 5, 6, 7, 8, 9]. mid is initially (0 + 8) / 2 = 4. nums[mid] = 5. nums[mid - 1] = 6. 6, 7 are peaks.
+
+Notice that in example 2, there is no peak in the right half because all the elements after mid descend.
+
+If the element to the left of the middle element is smaller than the middle element, there is definitely a peak in the right half of the
+array because even if the first element to the right of nums[mid] is smaller, the middle element is a peak. If all the elements after the
+middle element ascend, there still has to be a drop to get to minus infinity, so in this case the last element is the peak. And of course,
+when the elements after mid are mixed, there will be multiple peaks because adjacent elements are never the equal.
+
+1) Ascending after mid: [1, 2, 3, 4, 5]. nums[mid] = 3. 5 is the peak.  
+2) Descending after mid: [5, 4, 3, 5, 4, 3, 2]. nums[mid] = 5. 5 is the peak.
+3) Mixed after mid: [1, 2, 3, 4, 5, 6, 5, 7, 4]. nums[mid] = 5. 6 and 7 are peaks.
+
+Notice that in example 3, there is no peak in the left half because all the elements before mid descend.
 
 
 */
@@ -129,7 +142,7 @@ function findPeakElement(nums) {
 
     if (nums[mid - 1] > nums[mid]) {
       end = mid - 1; // search in the left half
-    } else {
+    } else { // if nums[mid - 1] < nums[mid]
       start = mid; // search in the right half
     }
 
@@ -139,6 +152,6 @@ function findPeakElement(nums) {
   return start;
 }
 
-console.log(findPeakElement([7, 5, 4, 3, 1, 4]))
+console.log(findPeakElement([2, 7, 3, 6, 5, 6, 7, 8, 9]))
 //console.log(findPeakElement([1, 6, 5, 4, 3, 2, 1]))
 //console.log(findPeakElement([1, 2, 3, 4, 5, 6, 1]))
