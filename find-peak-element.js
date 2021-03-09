@@ -87,3 +87,58 @@ function findPeakElementMSX(nums) {
     }
   }
 }
+
+/*
+Here is a solution with O(log n) complexity using binary search.
+
+The algorithm
+
+When doing our binary search, if the element to the left of the middle element is greater than the middle element, there is definitely a 
+peak in the left half of the array. This is the case because the element prior to nums[0] is minus infinity, so even if the elements keep 
+ascending before mid until the beginning of the array, there will be a drop to get to minus infinity, which means the peak is at the front 
+of the array. If there is a descension before mid - 1, mid - 1 was the peak because both it is greater than both its neighbours. When the 
+elements are mixed before mid - 1, there can be multiple peaks, because remember, adjacent elements are always distinct, so they must go 
+either up or down.
+
+1) Descending before mid - 1: [1, 4, 3, 1, 4], mid is intially (0 + 4) / 2 = 2. nums[mid] = 3. nums[mid - 1] = 4. 4 is a peak.
+2) Ascending before mid - 1: [7, 6, 5, 4, 3, 2, 1], mid is intiially (0 + 6) / 2 = 3. nums[mid] = 4. nums[mid - 1] = 5. 7 is a peak.
+3) Mixed before mid - 1: [2, 7, 3, 6, 5, 4, 3, 2, 1]. mid is initially (0 + 8) / 2 = 4. nums[mid] = 5. nums[mid - 1] = 6. 6, 7 are peaks.
+
+
+*/
+
+function findPeakElement(nums) {
+  const n = nums.length;
+  let start = 0;
+  let end = n - 1;
+
+  let i = 1;
+
+  while (start < end) {
+    let mid = Math.ceil((start + end) / 2);
+
+    console.log('ITERATION', i)
+    console.log('START', start)
+    console.log('END', end, )
+    console.log('MID', mid, )
+    console.log(`nums[start] = ${nums[start]}`)
+    console.log(`nums[end] = ${nums[end]}`)
+    console.log(`nums[mid] = ${nums[mid]}`)
+    console.log(`nums[mid - 1] = ${nums[mid - 1]}`)
+    console.log('')
+
+    if (nums[mid - 1] > nums[mid]) {
+      end = mid - 1; // search in the left half
+    } else {
+      start = mid; // search in the right half
+    }
+
+    i++;
+  }
+
+  return start;
+}
+
+console.log(findPeakElement([7, 5, 4, 3, 1, 4]))
+//console.log(findPeakElement([1, 6, 5, 4, 3, 2, 1]))
+//console.log(findPeakElement([1, 2, 3, 4, 5, 6, 1]))
